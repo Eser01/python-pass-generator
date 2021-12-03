@@ -3,7 +3,7 @@
 import sys
 import random
 import string
-from optparse import OptionParser
+import argparse
 
 def normalize_probabilities(probabilities:list):
     if len(probabilities) > 0:
@@ -31,57 +31,70 @@ def generate_password(length:int, samples:list, weights:list):
     return password
 
 if __name__ == '__main__':
-    parser = OptionParser()
-    parser.add_option("-u", "--upper",
+    parser = argparse.ArgumentParser(
+        description='Random characters password generator.',
+        add_help=False
+    )
+    parser.add_argument('-h', '--help',
+        action='help',
+        default=argparse.SUPPRESS,
+        help='Show this help message and exit.'
+    )
+    parser.add_argument('length',
+        metavar='LENGTH',
+        type=int,
+        help='The length of the password (min: 4).'
+    )
+    parser.add_argument("-u", "--upper",
         action="store_false",
         dest="upper",
         default=True,
         help="Disable ascii upper letters (enabled by default)"
     )
-    parser.add_option("-l", "--lower",
+    parser.add_argument("-l", "--lower",
         action="store_false",
         dest="lower",
         default=True,
-        help="Disable ascii lower letters (enabled by default)"
+        help="Disable ascii lower letters (enabled by default)."
     )
-    parser.add_option("-d", "--digit",
+    parser.add_argument("-d", "--digit",
         action="store_false",
         dest="digits",
         default=True,
-        help="Disable digit characters (enabled by default)"
+        help="Disable digit characters (enabled by default)."
     )
-    parser.add_option("-p", "--punctuation",
+    parser.add_argument("-p", "--punctuation",
         action="store_true",
         dest="punctuation",
         default=False,
-        help="Enable punctuation symbols (disabled by default)"
+        help="Enable punctuation symbols (disabled by default)."
     )
 
-    (options, args) = parser.parse_args()
+    args = parser.parse_args()
 
     samples = []
     weights = []
 
-    if options.upper:
+    if args.upper:
         samples.append(string.ascii_uppercase)
         weights.append(35)
 
-    if options.lower:
+    if args.lower:
         samples.append(string.ascii_lowercase)
         weights.append(35)
 
-    if options.digits:
+    if args.digits:
         samples.append(string.digits)
         weights.append(20)
 
-    if options.punctuation:
+    if args.punctuation:
         samples.append('!#$&()*+,-.:;=?@_')
         weights.append(10)
     
     weights = normalize_probabilities(weights)
 
     try:
-        pass_length = int(args[0]) if len(args) > 0 and args[0].isdigit() else 16
+        pass_length = args.length if args.length > 3 else 16
         password = generate_password(pass_length, samples, weights)
         print(password)
     except Exception as ex:
