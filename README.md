@@ -17,3 +17,8 @@ optional arguments:
   -d, --digit        Disable digit characters (enabled by default).
   -p, --punctuation  Enable punctuation symbols (disabled by default).
 ```
+
+## TODO
+
+- [] Customize propabilities of the samples.
+- [] Alternative password generator using word diccionaries.
