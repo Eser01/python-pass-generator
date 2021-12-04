@@ -20,5 +20,5 @@ optional arguments:
 
 ## TODO
 
-- [] Customize propabilities of the samples.
-- [] Alternative password generator using word diccionaries.
+- Customize propabilities of the samples.
+- Alternative password generator using word diccionaries.
